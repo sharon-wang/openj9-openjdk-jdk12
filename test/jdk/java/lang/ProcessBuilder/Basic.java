@@ -1776,7 +1776,21 @@ public class Basic {
             ProcessResults r = run(new ProcessBuilder(list));
             check(r.err().contains("java.lang.OutOfMemoryError:"));
             check(r.err().contains(javaExe));
-            check(r.err().contains(System.getProperty("java.version")));
+            check(r.err().contains(System.getProperty("java.version")));            
+            equal(r.exitValue(), 1);
+        } catch (Throwable t) { unexpected(t); }
+
+        //----------------------------------------------------------------
+        // simple test case to check results from processbuilder
+        //----------------------------------------------------------------
+        try {
+            List<String> list = new ArrayList<String>(javaChildArgs);
+            ProcessResults r = run(new ProcessBuilder(list));
+            System.out.println("4945 - process results out: " + r.out());
+            System.out.println("4945 - process results err: " + r.err());
+            out.println("4945 - process results: " + r.err());
+            System.err.println("4945 - process results out: " + r.out());
+            System.err.println("4945 - process results err: " + r.err());
             equal(r.exitValue(), 1);
         } catch (Throwable t) { unexpected(t); }
 
@@ -2688,7 +2702,6 @@ public class Basic {
         } catch (Throwable t) {
             throwable = t;
         }
-
         return new ProcessResults(out, err, exitValue, throwable);
     }
 
